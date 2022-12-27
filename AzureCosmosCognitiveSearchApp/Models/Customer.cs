@@ -13,11 +13,8 @@ namespace AzureCosmosCognitiveSearchApp.Models
 
         public string Region { get; set; } = string.Empty;
 
-        // Vehicle History
-        public List<string>? List { get; set; }
-
         public string Postcode { get; set; } = string.Empty;
 
-        public DateTime CreatedDate { get; set; }
+        public string CreatedDate { get; set; } = string.Empty;
     }
 }

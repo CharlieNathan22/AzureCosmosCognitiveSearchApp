@@ -1,5 +1,6 @@
 ﻿@page "/searchcosmos"
 @using AzureCosmosCognitiveSearchApp.CosmosAPI;
+@using AzureCosmosCognitiveSearchApp.Models;
 
 @inject ICosmosDBService CosmosDBService
 
@@ -9,11 +10,40 @@
 
 <p>
     <label>
-        Search user by Name
-        <input @bind-value="@SearchInput.Name" />
+        <input @bind-value="@SearchInput.Name">Search user by Name</input>
     </label>
     <label>
-        Search user by Name
-        <button @onclick="NameSearch" />
+        <button @onclick="NameSearch">Search user by Name</button>
     </label>
 </p>
+
+@if(!hasSearched){
+    <p>Click the search button to search the Cosmos DB</p>
+}else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Balance</th>
+                <th>Region</th>
+                <th>Postcode</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.WalletAmount</td>
+                    <td>@user.Region</td>
+                    <td>@user.Postcode</td>
+                    <td>@user.CreatedDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

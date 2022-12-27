@@ -1,9 +1,5 @@
 ﻿using AzureCosmosCognitiveSearchApp.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Linq;
-using System.Configuration;
-using System.Text;
 
 namespace AzureCosmosCognitiveSearchApp.CosmosAPI
 {
@@ -64,24 +60,23 @@ namespace AzureCosmosCognitiveSearchApp.CosmosAPI
         {
             string sqlQueryText = "SELECT * FROM c ";
 
-            if (filters.IsNull() || filters.ContainsKey(""))
+            if (filters.ContainsKey(""))
             {
                 return new QueryDefinition(sqlQueryText);
             }
 
-            sqlQueryText.Concat("WHERE c.@filterKey = @filterValue");
+            sqlQueryText = string.Concat(sqlQueryText, "WHERE c.Name = @filterValue");
             if (filters.Count == 1)
             {
                 return new QueryDefinition(sqlQueryText)
-                    .WithParameter("@filterKey", filters.FirstOrDefault().Key)
                     .WithParameter("@filterValue", filters.FirstOrDefault().Value);
-            }
-            else
+            } else
             {
                 int count = 2;
                 foreach (var filter in filters)
                 {
-                    sqlQueryText.Concat($" AND c.@filterKey{count} = @filterValue{count}");
+                    string newFilter = $" AND c.@filterKey{count} = @filterValue{count}";
+                    sqlQueryText = string.Concat(sqlQueryText, newFilter);
                     count++;
                 }
                 QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
