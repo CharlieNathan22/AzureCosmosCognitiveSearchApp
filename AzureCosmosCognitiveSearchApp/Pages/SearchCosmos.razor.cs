@@ -6,14 +6,22 @@ namespace AzureCosmosCognitiveSearchApp.Pages
 {
     public partial class SearchCosmos
     {
-        [Inject]
-        CosmosDBService CosmosDBService { get; set; }
+        private Customer SearchInput { get; set; } = new Customer();
 
-        public List<Customer>? users { get; set; }
+        public IEnumerable<Customer>? users { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+        }
+
+        private async Task NameSearch()
+        {
+            if(string.IsNullOrEmpty(SearchInput.Name))
+            {
+                users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>());
+            }
+            users =  await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() {{ "Name", SearchInput.Name }});
         }
     }
 }

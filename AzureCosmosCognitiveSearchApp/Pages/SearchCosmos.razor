@@ -1,6 +1,19 @@
 ﻿@page "/searchcosmos"
+@using AzureCosmosCognitiveSearchApp.CosmosAPI;
+
+@inject ICosmosDBService CosmosDBService
 
 <PageTitle>Search Cosmos</PageTitle>
 
 <h1>Find a user by filtering and searching the Azure Cosmos DB</h1>
 
+<p>
+    <label>
+        Search user by Name
+        <input @bind-value="@SearchInput.Name" />
+    </label>
+    <label>
+        Search user by Name
+        <button @onclick="NameSearch" />
+    </label>
+</p>
