@@ -1,17 +1,12 @@
 ﻿using AzureCosmosCognitiveSearchApp.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Azure.Cosmos;
 
 namespace AzureCosmosCognitiveSearchApp.CosmosAPI
 {
     public class CosmosDBService : ICosmosDBService
     {
-        // The Azure Cosmos DB endpoint for running this sample.
-        private static readonly string EndpointUri = "https://charliecosmosdb.documents.azure.com:443/";
-
-        // The primary key for the Azure Cosmos account.
-        private static readonly string PrimaryKey = "2CZVy6j3xXqNjDaAUGIBbCC6anQynDhBfRZbbfQIM8RqGVuLZAZDEjqJt4YKrhUn1Etval9ZP2mEACDbH0e9PA==";
-
-        // The name of the database and container we will create
+        // The name of the CosmosDB database and container
         private static readonly string databaseId = "ToDoList";
         private static readonly string containerId = "Items";
 
@@ -24,9 +19,13 @@ namespace AzureCosmosCognitiveSearchApp.CosmosAPI
         // The container we will create.
         private Container container;
 
-        public CosmosDBService()
+        //My config service to get keys and endpoints from appsettings.json
+        private readonly IConfiguration myConfig;
+
+        public CosmosDBService(IConfiguration config)
         {
-            cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "CosmosDBCognitiveSearchDemo" });
+            myConfig = config;
+            cosmosClient = new CosmosClient(myConfig.GetConnectionString("CosmosEndpointUri"), myConfig.GetConnectionString("CosmosPK"), new CosmosClientOptions() { ApplicationName = "CosmosDBCognitiveSearchDemo" });
             database = cosmosClient.GetDatabase(databaseId);
             container = database.GetContainer(containerId);
         }

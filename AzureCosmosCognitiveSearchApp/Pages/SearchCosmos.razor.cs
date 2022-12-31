@@ -20,14 +20,14 @@ namespace AzureCosmosCognitiveSearchApp.Pages
 
         private async Task NameSearch()
         {
-            if(string.IsNullOrEmpty(SearchInput.Name))
+            if(string.IsNullOrEmpty(SearchInput.name))
             {
                 users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "", "" } });
                 StateHasChanged();
                 hasSearched = true;
             } else
             {
-                users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "Name", SearchInput.Name } });
+                users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "id", SearchInput.id } });
                 StateHasChanged();
                 hasSearched = true;
             }

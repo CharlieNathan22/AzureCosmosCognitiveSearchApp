@@ -1,0 +1,82 @@
+﻿@page "/cognitivesearch"
+
+@using AzureCosmosCognitiveSearchApp.CosmosAPI
+@using AzureCosmosCognitiveSearchApp.Models
+
+@inject ICognitiveSearchService CognitiveSearchService
+
+<PageTitle>Cognitive Search</PageTitle>
+
+<h1>This component demonstrates fetching data from an Azure Cognitive service Index</h1>
+
+<p>Enter a word and click the button to initiate a full text search on the index</p>
+
+<p>
+    <label>
+        <input @bind-value="@searchData.searchText">Search documents</input>
+    </label>
+    <label>
+        <button @onclick="Search">Click to search</button>
+    </label>
+</p>
+
+<label>
+    Facet Navigation
+</label>
+<td valign="top">
+    <div id="facetplace" class="facetchecks">
+
+        @if (searchData.searchText != null && Users != null)
+        {
+            if (Regions.Count > 0)
+            {
+                <EditForm Model="@searchData">
+                    <h5 class="facetheader">Region:</h5>
+                    <InputRadioGroup Name="RegionRadioGroup" @bind-Value="@searchData.regionFilter">
+                        @for(var r = 0; r < Regions.Count; r++ )
+                        {
+                            var regionValue = searchData.resultList!.Facets["region"][r];
+                            <label>@regionValue.Value count: @searchData.resultList!.Facets["region"][r].Count</label>
+                            <br />
+                            <InputRadio Name="RegionRadioGroup" Value="@regionValue.Value" />
+                            <br />
+                        }
+                    </InputRadioGroup>
+                </EditForm>
+            }
+        }
+    </div>
+</td>
+
+@if (!hasSearched)
+{
+    <p>Click the search button to search the Index, leave text blank for all documents</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Balance</th>
+                <th>Region</th>
+                <th>Postcode</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Users!)
+            {
+                <tr>
+                    <td>@user.id</td>
+                    <td>@user.name</td>
+                    <td>@user.walletAmount</td>
+                    <td>@user.region</td>
+                    <td>@user.postcode</td>
+                    <td>@user.createdDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

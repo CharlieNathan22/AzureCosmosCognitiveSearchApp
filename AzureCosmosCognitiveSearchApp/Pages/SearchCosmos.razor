@@ -4,16 +4,16 @@
 
 @inject ICosmosDBService CosmosDBService
 
-<PageTitle>Search Cosmos</PageTitle>
+<PageTitle>Search Cosmos (classic)</PageTitle>
 
 <h1>Find a user by filtering and searching the Azure Cosmos DB</h1>
 
 <p>
     <label>
-        <input @bind-value="@SearchInput.Name">Search user by Name</input>
+        <input @bind-value="@SearchInput.name">Search user by Name</input>
     </label>
     <label>
-        <button @onclick="NameSearch">Search user by Name</button>
+        <button @onclick="NameSearch">Search user by ID</button>
     </label>
 </p>
 
@@ -36,12 +36,12 @@
             @foreach (var user in users)
             {
                 <tr>
-                    <td>@user.Id</td>
-                    <td>@user.Name</td>
-                    <td>@user.WalletAmount</td>
-                    <td>@user.Region</td>
-                    <td>@user.Postcode</td>
-                    <td>@user.CreatedDate</td>
+                    <td>@user.id</td>
+                    <td>@user.name</td>
+                    <td>@user.walletAmount</td>
+                    <td>@user.region</td>
+                    <td>@user.postcode</td>
+                    <td>@user.createdDate</td>
                 </tr>
             }
         </tbody>

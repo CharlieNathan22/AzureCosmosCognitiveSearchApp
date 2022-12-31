@@ -4,17 +4,16 @@ namespace AzureCosmosCognitiveSearchApp.Models
 {
     public class Customer
     {
-        [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
+        public string id { get; set; } = string.Empty;
 
-        public string Name { get; set; } = string.Empty;
+        public string name { get; set; } = string.Empty;
 
-        public double WalletAmount { get; set; }
+        public double walletAmount { get; set; }
 
-        public string Region { get; set; } = string.Empty;
+        public string region { get; set; } = string.Empty;
 
-        public string Postcode { get; set; } = string.Empty;
+        public string postcode { get; set; } = string.Empty;
 
-        public string CreatedDate { get; set; } = string.Empty;
+        public string createdDate { get; set; } = string.Empty;
     }
 }
