@@ -2,6 +2,7 @@
 
 @using AzureCosmosCognitiveSearchApp.CosmosAPI
 @using AzureCosmosCognitiveSearchApp.Models
+@using MudBlazor
 
 @inject ICognitiveSearchService CognitiveSearchService
 
@@ -11,44 +12,59 @@
 
 <p>Enter a word and click the button to initiate a full text search on the index</p>
 
-<p>
+<div>
     <label>
-        <input @bind-value="@searchData.searchText">Search documents</input>
+        <MudSelect @bind-Value="@SearchData.ItemTypeFilter" Label="Item Type" OpenIcon="@Icons.Material.Filled.DocumentScanner" AdornmentColor="Color.Primary" Variant="Variant.Filled">
+            <MudSelectItem Value="@("saleHeader")">Sale Header</MudSelectItem>
+            <MudSelectItem Value="@("saleAttachment")">Sale Attachment</MudSelectItem>
+        </MudSelect>
     </label>
     <label>
-        <button @onclick="Search">Click to search</button>
+        <MudTextField Clearable="true" T="string" Label="Search Documents" @bind-Value="@SearchData.SearchText" HelperText="@SearchbarTooltipText" HelperTextOnFocus="true" Variant="Variant.Text" AdornmentIcon="@Icons.Material.TwoTone.ManageSearch" AdornmentColor="Color.Primary"/>
     </label>
-</p>
+    <label>
+        <MudButton OnClick="@(() => Search())" EndIcon="@Icons.Material.Filled.Send" Variant="Variant.Filled" Color="Color.Primary">Search</MudButton>
+    </label>
+</div>
 
-<label>
-    Facet Navigation
-</label>
-<td valign="top">
-    <div id="facetplace" class="facetchecks">
+@if(SaleHeaders is not null && SaleHeaders.Any())
+{
+    <MudToggleIconButton @bind-Toggled="@FiltersVisible" Icon="@Icons.Material.Filled.FilterAltOff" Color="Color.Primary" Title="Off" ToggledIcon="@Icons.Material.Filled.FilterAlt" ToggledColor="@Color.Success" ToggledTitle="On" />
+    <span>Set Filters</span>
 
-        @if (searchData.searchText != null && Users != null)
+    <MudDrawer @bind-Open="@FiltersVisible" DisableOverlay="true" Elevation="1" Variant="@DrawerVariant.Temporary">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Filter the Sale Search</MudText>
+        </MudDrawerHeader>
+        @if(DepartmentFacet.Count > 0)
         {
-            if (Regions.Count > 0)
-            {
-                <EditForm Model="@searchData">
-                    <h5 class="facetheader">Region:</h5>
-                    <InputRadioGroup Name="RegionRadioGroup" @bind-Value="@searchData.regionFilter">
-                        @for(var r = 0; r < Regions.Count; r++ )
-                        {
-                            var regionValue = searchData.resultList!.Facets["region"][r];
-                            <label>@regionValue.Value count: @searchData.resultList!.Facets["region"][r].Count</label>
-                            <br />
-                            <InputRadio Name="RegionRadioGroup" Value="@regionValue.Value" />
-                            <br />
-                        }
-                    </InputRadioGroup>
-                </EditForm>
-            }
+        <MudForm>
+            <label class="facetheader">Department:</label>
+            <MudRadioGroup @bind-SelectedOption="@SearchData.DepartmentFilter">
+                    @foreach(var department in DepartmentFacet)
+                    {
+                        <MudRadio Option="@department.Item1" Color="Color.Primary">@department.Item1 count: @department.Item2</MudRadio>
+                        <br />
+                    }
+            </MudRadioGroup>
+        </MudForm>
+        <hr style="width:60%">
         }
-    </div>
-</td>
+        <div class="d-flex align-center">
+            <MudTooltip Text="Clear filter" Color="Color.Info">
+                <MudIconButton OnClick="@(() => ClearFilters())" Icon="@Icons.Material.Filled.Delete" Color="Color.Primary">Clear Filter</MudIconButton>/>
+            </MudTooltip>
+        </div>
+    </MudDrawer>
+    }
+}
 
-@if (!hasSearched)
+<div class="d-flex mud-width-full align-center mt-8">
+    <MudText Typo="Typo.subtitle1" Class="mr-2">Selected filters: </MudText>
+    <MudChip Color="Color.Primary">@SearchData.ItemTypeFilter</MudChip>
+</div>
+
+@if (!HasSearched)
 {
     <p>Click the search button to search the Index, leave text blank for all documents</p>
 }
@@ -61,20 +77,14 @@ else
                 <th>Name</th>
                 <th>Balance</th>
                 <th>Region</th>
-                <th>Postcode</th>
                 <th>Created Date</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in Users!)
+            @foreach (var user in SaleHeaders!)
             {
                 <tr>
-                    <td>@user.id</td>
-                    <td>@user.name</td>
-                    <td>@user.walletAmount</td>
-                    <td>@user.region</td>
-                    <td>@user.postcode</td>
-                    <td>@user.createdDate</td>
+                    <td>@user.Id</td>
                 </tr>
             }
         </tbody>

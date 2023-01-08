@@ -10,7 +10,7 @@ namespace AzureCosmosCognitiveSearchApp.Pages
 
         private Customer SearchInput { get; set; } = new Customer();
 
-        public IEnumerable<Customer> users { get; set; } = new List<Customer>();
+        //public IEnumerable<Customer> users { get; set; } = new List<Customer>();
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,14 +20,14 @@ namespace AzureCosmosCognitiveSearchApp.Pages
 
         private async Task NameSearch()
         {
-            if(string.IsNullOrEmpty(SearchInput.name))
+            if(string.IsNullOrEmpty(SearchInput.Name))
             {
-                users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "", "" } });
+                //users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "", "" } });
                 StateHasChanged();
                 hasSearched = true;
             } else
             {
-                users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "id", SearchInput.id } });
+                //sers = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "id", SearchInput.Id } });
                 StateHasChanged();
                 hasSearched = true;
             }

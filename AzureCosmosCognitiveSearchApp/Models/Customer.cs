@@ -1,19 +1,9 @@
-﻿using Newtonsoft.Json;
-
-namespace AzureCosmosCognitiveSearchApp.Models
+﻿namespace AzureCosmosCognitiveSearchApp.Models
 {
     public class Customer
     {
-        public string id { get; set; } = string.Empty;
+        public int Code { get; set; }
 
-        public string name { get; set; } = string.Empty;
-
-        public double walletAmount { get; set; }
-
-        public string region { get; set; } = string.Empty;
-
-        public string postcode { get; set; } = string.Empty;
-
-        public string createdDate { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
     }
 }

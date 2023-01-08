@@ -4,13 +4,24 @@ namespace AzureCosmosCognitiveSearchApp.Models
 {
     public class SearchData
     {
-        // The list of results.
-        public SearchResults<Customer>? resultList;
+        //public SearchResults<CognitiveSearchModel>? resultList;
 
         // The text to search for.
-        public string searchText { get; set; } = string.Empty;
+        public string SearchText { get; set; } = string.Empty;
 
-        // Filter by region Facet
-        public string regionFilter { get; set; } = string.Empty;
+        // The department filter selected in radio group
+        public string DepartmentFilter { get; set; } = string.Empty;
+
+        public string ItemTypeFilter { get; set; } = string.Empty;
+
+        public string DivisionFilter { get; set; } = string.Empty;
+
+        public string CurrencyFilter { get; set; } = string.Empty;
+
+        public string VendorNameFilter { get; set; } = string.Empty;
+
+        public string CreatedByFilter { get; set; } = string.Empty;
+
+        public DateTime? CreatedDateFilter { get; set; }
     }
 }

@@ -10,7 +10,7 @@
 
 <p>
     <label>
-        <input @bind-value="@SearchInput.name">Search user by Name</input>
+        <input @bind-value="@SearchInput.Name">Search user by Name</input>
     </label>
     <label>
         <button @onclick="NameSearch">Search user by ID</button>
@@ -28,22 +28,10 @@
                 <th>Name</th>
                 <th>Balance</th>
                 <th>Region</th>
-                <th>Postcode</th>
                 <th>Created Date</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in users)
-            {
-                <tr>
-                    <td>@user.id</td>
-                    <td>@user.name</td>
-                    <td>@user.walletAmount</td>
-                    <td>@user.region</td>
-                    <td>@user.postcode</td>
-                    <td>@user.createdDate</td>
-                </tr>
-            }
         </tbody>
     </table>
 }
