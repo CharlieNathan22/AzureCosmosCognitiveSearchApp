@@ -29,13 +29,12 @@ namespace AzureCosmosCognitiveSearchApp.CosmosAPI
             string filters = CreateFilters(searchData);
             SearchOptions options = new SearchOptions() { Filter = filters };
             options.Select.Add(CreateSelect(searchData.ItemTypeFilter));
-            options.OrderBy.Add("createdDate desc");
+            options.OrderBy.Add("department desc");
             options.Facets.Add("sourceSystem");
             options.Facets.Add("division");
             options.Facets.Add("department, count:5");
             options.Facets.Add("vendor/name, count:5");
-            options.Facets.Add("sellerCurrency, count:3");
-            options.Facets.Add("createdBy, count:4");
+            options.Facets.Add("sellerCurrency, count:5");
             return options;
         }
 
@@ -49,39 +48,33 @@ namespace AzureCosmosCognitiveSearchApp.CosmosAPI
         {
             List<string> filtersList = new()
             {
-                $"'itemType' eq '{searchData.ItemTypeFilter}'"
+                $"itemType eq '{searchData.ItemTypeFilter}'"
             };
-            if (!searchData.CreatedDateFilter.IsNull())
-            {
-                filtersList.Add($"'createdDate' ge '{searchData.CreatedDateFilter}'");
-
-            }
             if (!string.IsNullOrEmpty(searchData.CreatedByFilter))
             {
-                filtersList.Add($"'createdBy' eq '{searchData.CreatedByFilter}'");
+                filtersList.Add($"createdBy eq '{searchData.CreatedByFilter}'");
 
             }
             if (!string.IsNullOrEmpty(searchData.DepartmentFilter))
             {
-                filtersList.Add($"'department' eq '{searchData.DepartmentFilter}'");
+                filtersList.Add($"department eq '{searchData.DepartmentFilter}'");
 
             }
             if (!string.IsNullOrEmpty(searchData.DivisionFilter))
             {
-                filtersList.Add($"'division' eq '{searchData.DivisionFilter}'");
+                filtersList.Add($"division eq '{searchData.DivisionFilter}'");
 
             }
             if (!string.IsNullOrEmpty(searchData.CurrencyFilter))
             {
-                filtersList.Add($"'sellerCurrency' eq '{searchData.CurrencyFilter}'");
+                filtersList.Add($"sellerCurrency eq '{searchData.CurrencyFilter}'");
 
             }
             if (!string.IsNullOrEmpty(searchData.VendorNameFilter))
             {
-                filtersList.Add($"'vendor/name' eq '{searchData.VendorNameFilter}'");
+                filtersList.Add($"vendor/name eq '{searchData.VendorNameFilter}'");
 
             }
-
             return string.Join(" and ", filtersList);
         }
 

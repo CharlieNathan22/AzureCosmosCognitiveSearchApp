@@ -6,7 +6,7 @@ namespace AzureCosmosCognitiveSearchApp.Pages
 {
     public partial class SearchCosmos
     {
-        private bool hasSearched { get; set; }
+        private bool HasSearched { get; set; }
 
         private Customer SearchInput { get; set; } = new Customer();
 
@@ -14,22 +14,23 @@ namespace AzureCosmosCognitiveSearchApp.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            hasSearched= false;
+            HasSearched= false;
             await base.OnInitializedAsync();
         }
 
-        private async Task NameSearch()
+        private void NameSearch()
         {
-            if(string.IsNullOrEmpty(SearchInput.Name))
+            if (string.IsNullOrEmpty(SearchInput.name))
             {
                 //users = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "", "" } });
                 StateHasChanged();
-                hasSearched = true;
-            } else
+                HasSearched = true;
+            }
+            else
             {
                 //sers = await CosmosDBService.CosmosGetUsers(new Dictionary<string, string>() { { "id", SearchInput.Id } });
                 StateHasChanged();
-                hasSearched = true;
+                HasSearched = true;
             }
         }
     }

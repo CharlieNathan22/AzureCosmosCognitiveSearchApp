@@ -2,20 +2,20 @@
 {
     public class SaleAttachment
     {
-        public string Id { get; set; } = string.Empty;
+        public string id { get; set; } = string.Empty;
 
-        public string ItemType { get; set; } = "saleAttachment";
+        public string itemType { get; set; } = "saleAttachment";
 
-        public string SaleNumber { get; set; } = string.Empty;
+        public string saleNumber { get; set; } = string.Empty;
 
-        public string Division { get; set; } = string.Empty;
+        public string division { get; set; } = string.Empty;
 
-        public string FileName { get; set; } = string.Empty;
+        public string fileName { get; set; } = string.Empty;
 
-        public string DocumentType { get; set; } = string.Empty;
+        public string documentType { get; set; } = string.Empty;
 
-        public string CreatedBy { get; set; } = string.Empty;
+        public string createdBy { get; set; } = string.Empty;
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime createdDate { get; set; }
     }
 }

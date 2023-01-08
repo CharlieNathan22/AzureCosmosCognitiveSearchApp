@@ -9,34 +9,35 @@
 <PageTitle>Cognitive Search</PageTitle>
 
 <h1>This component demonstrates fetching data from an Azure Cognitive service Index</h1>
-
-<p>Enter a word and click the button to initiate a full text search on the index</p>
-
+<hr style="width:60%">
 <div>
     <label>
-        <MudSelect @bind-Value="@SearchData.ItemTypeFilter" Label="Item Type" OpenIcon="@Icons.Material.Filled.DocumentScanner" AdornmentColor="Color.Primary" Variant="Variant.Filled">
+        <MudSelect @bind-Value="@SearchData.ItemTypeFilter" @onchange="@ChangeItemType" Label="Item Type" AdornmentColor="Color.Primary" Variant="Variant.Filled">
             <MudSelectItem Value="@("saleHeader")">Sale Header</MudSelectItem>
             <MudSelectItem Value="@("saleAttachment")">Sale Attachment</MudSelectItem>
         </MudSelect>
     </label>
     <label>
-        <MudTextField Clearable="true" T="string" Label="Search Documents" @bind-Value="@SearchData.SearchText" HelperText="@SearchbarTooltipText" HelperTextOnFocus="true" Variant="Variant.Text" AdornmentIcon="@Icons.Material.TwoTone.ManageSearch" AdornmentColor="Color.Primary"/>
+        <MudTextField Clearable="true" T="string" Label="Search Documents" @bind-Value="@SearchData.SearchText" HelperText="@SearchbarTooltipText" HelperTextOnFocus="true" Variant="Variant.Text" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" IconSize="Size.Small"/>
     </label>
     <label>
-        <MudButton OnClick="@(() => Search())" EndIcon="@Icons.Material.Filled.Send" Variant="Variant.Filled" Color="Color.Primary">Search</MudButton>
+        <MudButton OnClick="@(() => Search())" EndIcon="@Icons.Custom.Brands.MicrosoftAzure" Variant="Variant.Outlined" Color="Color.Primary" IconColor="Color.Info">Search</MudButton>
     </label>
 </div>
-
+@if (!HasSearched)
+{
+    <p>Click the search button to search the Index, leave text blank for all documents</p>
+}
 @if(SaleHeaders is not null && SaleHeaders.Any())
 {
-    <MudToggleIconButton @bind-Toggled="@FiltersVisible" Icon="@Icons.Material.Filled.FilterAltOff" Color="Color.Primary" Title="Off" ToggledIcon="@Icons.Material.Filled.FilterAlt" ToggledColor="@Color.Success" ToggledTitle="On" />
+    <MudToggleIconButton @bind-Toggled="@FiltersVisible" Icon="@Icons.Material.Filled.FilterAltOff" Color="Color.Error" Title="Off" ToggledIcon="@Icons.Material.Filled.FilterAlt" ToggledColor="@Color.Success" ToggledTitle="On" />
     <span>Set Filters</span>
 
     <MudDrawer @bind-Open="@FiltersVisible" DisableOverlay="true" Elevation="1" Variant="@DrawerVariant.Temporary">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">Filter the Sale Search</MudText>
         </MudDrawerHeader>
-        @if(DepartmentFacet.Count > 0)
+        @if(DepartmentFacet.Count > 1)
         {
         <MudForm>
             <label class="facetheader">Department:</label>
@@ -50,43 +51,126 @@
         </MudForm>
         <hr style="width:60%">
         }
+        @if (CurrencyFacet.Count > 1)
+        {
+            <MudForm>
+                <label class="facetheader">Seller Currency:</label>
+                <MudRadioGroup @bind-SelectedOption="@SearchData.CurrencyFilter">
+                    @foreach (var currency in CurrencyFacet)
+                    {
+                        <MudRadio Option="@currency.Item1" Color="Color.Primary">@currency.Item1 count: @currency.Item2</MudRadio>
+                        <br />
+                    }
+                </MudRadioGroup>
+            </MudForm>
+            <hr style="width:60%">
+        }
+        @if (DivisionFacet.Count > 1)
+        {
+            <MudForm>
+                <label class="facetheader">Division:</label>
+                <MudRadioGroup @bind-SelectedOption="@SearchData.DivisionFilter">
+                    @foreach (var division in DivisionFacet)
+                    {
+                        <MudRadio Option="@division.Item1" Color="Color.Primary">@division.Item1 count: @division.Item2</MudRadio>
+                        <br />
+                    }
+                </MudRadioGroup>
+            </MudForm>
+            <hr style="width:60%">
+        }
+        @if(VendorNameFacet.Count > 1)
+        {
+        <MudForm>
+            <label class="facetheader">Vendor Name:</label>
+            <MudRadioGroup @bind-SelectedOption="@SearchData.DepartmentFilter">
+                    @foreach(var venodrName in VendorNameFacet)
+                    {
+                        <MudRadio Option="@venodrName.Item1" Color="Color.Primary">@venodrName.Item1 count: @venodrName.Item2</MudRadio>
+                        <br />
+                    }
+            </MudRadioGroup>
+        </MudForm>
+        <hr style="width:60%">
+        }
         <div class="d-flex align-center">
             <MudTooltip Text="Clear filter" Color="Color.Info">
                 <MudIconButton OnClick="@(() => ClearFilters())" Icon="@Icons.Material.Filled.Delete" Color="Color.Primary">Clear Filter</MudIconButton>/>
             </MudTooltip>
         </div>
     </MudDrawer>
-    }
 }
 
 <div class="d-flex mud-width-full align-center mt-8">
     <MudText Typo="Typo.subtitle1" Class="mr-2">Selected filters: </MudText>
-    <MudChip Color="Color.Primary">@SearchData.ItemTypeFilter</MudChip>
+    <MudChipSet AllClosable="true">
+        <MudChip Color="Color.Primary">@SearchData.ItemTypeFilter</MudChip>
+        @if (!string.IsNullOrWhiteSpace(SearchData.DepartmentFilter))
+        {
+            <MudChip OnClose="@(() => ClearFilter("department"))" Color="Color.Primary">@SearchData.DepartmentFilter</MudChip>
+        }
+        @if (!string.IsNullOrWhiteSpace(SearchData.DivisionFilter))
+        {
+            <MudChip OnClose="@(() => ClearFilter("division"))" Color="Color.Primary">@SearchData.DivisionFilter</MudChip>
+        }
+        @if (!string.IsNullOrWhiteSpace(SearchData.CurrencyFilter))
+        {
+            <MudChip OnClose="@(() => ClearFilter("currency"))" Color="Color.Primary">@SearchData.CurrencyFilter</MudChip>
+        }
+        @if (!string.IsNullOrWhiteSpace(SearchData.VendorNameFilter))
+        {
+            <MudChip OnClose="@(() => ClearFilter("vendorName"))" Color="Color.Primary">@SearchData.VendorNameFilter</MudChip>
+        }
+    </MudChipSet>
 </div>
 
-@if (!HasSearched)
+@if(SearchData.ItemTypeFilter is "saleHeader")
 {
-    <p>Click the search button to search the Index, leave text blank for all documents</p>
+    <MudTable Items="@SaleHeaders"  Hover="true" Bordered="true" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Sale Headers</MudText>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Sale Name</MudTh>
+            <MudTh>Department</MudTh>
+            <MudTh>Source System</MudTh>
+            <MudTh>Seller Currency</MudTh>
+            <MudTh>Vendor Name</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.saleName</MudTd>
+            <MudTd DataLabel="Department">@context.department</MudTd>
+            <MudTd DataLabel="SourceSystem">@context.sourceSystem</MudTd>
+            <MudTd DataLabel="Seller Currency">@context.sellerCurrency</MudTd>
+            <MudTd DataLabel="Vendor Name">@context.vendor.name</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
 }
-else
+else if (SearchData.ItemTypeFilter is "saleAttachment")
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Balance</th>
-                <th>Region</th>
-                <th>Created Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in SaleHeaders!)
-            {
-                <tr>
-                    <td>@user.Id</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <MudTable Items="@SaleAttachements" Hover="true" Bordered="true" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Sale Attachments</MudText>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Sale Number</MudTh>
+            <MudTh>File Name</MudTh>
+            <MudTh>Document Type</MudTh>
+            <MudTh>Created By</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="SourceSystem">@context.saleNumber</MudTd>
+            <MudTd DataLabel="Name">@context.fileName</MudTd>
+            <MudTd DataLabel="Department">@context.documentType</MudTd>
+            <MudTd DataLabel="Seller Currency">@context.createdBy</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
 }

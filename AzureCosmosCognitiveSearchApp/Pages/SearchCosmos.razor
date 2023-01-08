@@ -10,14 +10,14 @@
 
 <p>
     <label>
-        <input @bind-value="@SearchInput.Name">Search user by Name</input>
+        <input @bind-value="@SearchInput.name">Search user by Name</input>
     </label>
     <label>
         <button @onclick="NameSearch">Search user by ID</button>
     </label>
 </p>
 
-@if(!hasSearched){
+@if(!HasSearched){
     <p>Click the search button to search the Cosmos DB</p>
 }else
 {

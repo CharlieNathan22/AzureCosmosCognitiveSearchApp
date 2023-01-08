@@ -2,36 +2,36 @@
 {
     public class SaleHeader
     {
-        public string Id { get; set; } = string.Empty;
+        public string id { get; set; } = string.Empty;
 
-        public string ItemType { get; set; } = "saleHeader";
+        public string itemType { get; set; } = "saleHeader";
 
-        public string SaleNumber { get; set; } = string.Empty;
+        public string saleNumber { get; set; } = string.Empty;
 
-        public string SourceSystem { get; set; } = string.Empty;
+        public string sourceSystem { get; set; } = string.Empty;
 
-        public string Division { get; set; } = string.Empty;
+        public string division { get; set; } = string.Empty;
 
-        public string ViewingCurrency { get; set; } = string.Empty;
+        public string viewingCurrency { get; set; } = string.Empty;
 
-        public string SellerCurrency { get; set; } = string.Empty;
+        public string sellerCurrency { get; set; } = string.Empty;
 
-        public string Department { get; set; } = string.Empty;
+        public string department { get; set; } = string.Empty;
 
-        public string SaleName { get; set; } = string.Empty;
+        public string saleName { get; set; } = string.Empty;
 
-        public int StatusCode { get; set; }
+        public int statusCode { get; set; }
 
-        public bool ImportIndicator { get; set; }
+        public bool importIndicator { get; set; }
 
-        public Customer Customer { get; set; } = new Customer();
+        public Customer customer { get; set; } = new Customer();
 
-        public Vendor Vendor { get; set; } = new Vendor();
+        public Vendor vendor { get; set; } = new Vendor();
 
-        public string Notes { get; set; } = string.Empty;
+        public string notes { get; set; } = string.Empty;
 
-        public string CreatedBy { get; set; } = string.Empty;
+        public string createdBy { get; set; } = string.Empty;
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime createdDate { get; set; }
     }
 }

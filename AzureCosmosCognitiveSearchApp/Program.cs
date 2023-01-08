@@ -1,7 +1,5 @@
-using AzureCosmosCognitiveSearchApp.Models;
 using AzureCosmosCognitiveSearchApp.CosmosAPI;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);

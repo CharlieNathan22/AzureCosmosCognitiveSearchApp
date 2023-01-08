@@ -12,7 +12,7 @@ namespace AzureCosmosCognitiveSearchApp.Models
         // The department filter selected in radio group
         public string DepartmentFilter { get; set; } = string.Empty;
 
-        public string ItemTypeFilter { get; set; } = string.Empty;
+        public string ItemTypeFilter { get; set; } = "saleHeader";
 
         public string DivisionFilter { get; set; } = string.Empty;
 
@@ -22,6 +22,5 @@ namespace AzureCosmosCognitiveSearchApp.Models
 
         public string CreatedByFilter { get; set; } = string.Empty;
 
-        public DateTime? CreatedDateFilter { get; set; }
     }
 }

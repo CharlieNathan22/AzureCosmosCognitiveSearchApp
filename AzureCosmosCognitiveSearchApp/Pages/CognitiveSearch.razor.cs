@@ -1,6 +1,7 @@
 ﻿using Azure.Search.Documents.Models;
 using AzureCosmosCognitiveSearchApp.Models;
 using Microsoft.Azure.Cosmos;
+using MudBlazor;
 using System.Data;
 
 namespace AzureCosmosCognitiveSearchApp.Pages
@@ -15,7 +16,6 @@ namespace AzureCosmosCognitiveSearchApp.Pages
         private List<Tuple<string?, long?>> CurrencyFacet { get; set; } = new();
         private List<Tuple<string?, long?>> DivisionFacet { get; set; } = new();
         private List<Tuple<string?, long?>> VendorNameFacet { get; set; } = new();
-        private List<Tuple<string?, long?>> CreatedByFacet { get; set; } = new();
         private bool HasSearched { get; set; }
         private bool FiltersVisible { get; set; }
         private string SearchbarTooltipText { get; set; } = "Search by Id, Sale Name, Sale Notes and Username";
@@ -26,7 +26,6 @@ namespace AzureCosmosCognitiveSearchApp.Pages
         {
             HasSearched = false;
             FiltersVisible= false;
-            SearchData.ItemTypeFilter = "saleHeader";
             SearchData = new SearchData();
             await base.OnInitializedAsync();
         }
@@ -59,17 +58,40 @@ namespace AzureCosmosCognitiveSearchApp.Pages
             DivisionFacet = results.Facets["division"].Select(x => Tuple.Create(x.Value.ToString(), x.Count)).ToList();
             CurrencyFacet = results.Facets["sellerCurrency"].Select(x => Tuple.Create(x.Value.ToString(), x.Count)).ToList();
             VendorNameFacet = results.Facets["vendor/name"].Select(x => Tuple.Create(x.Value.ToString(), x.Count)).ToList();
-            CreatedByFacet = results.Facets["createdBy"].Select(x => Tuple.Create(x.Value.ToString(), x.Count)).ToList();
         }
 
         private void ClearFilters()
         {
-            SearchData.CreatedDateFilter = null;
             SearchData.DivisionFilter = string.Empty;
             SearchData.CurrencyFilter = string.Empty;
             SearchData.VendorNameFilter = string.Empty;
             SearchData.CreatedByFilter = string.Empty;
             SearchData.DepartmentFilter = string.Empty;
+        }
+
+        private void ClearFilter(string filter)
+        {
+            switch (filter)
+            {
+                case "department":
+                    SearchData.DepartmentFilter = string.Empty;
+                    break;
+                case "division":
+                    SearchData.DepartmentFilter = string.Empty;
+                    break;
+                case "currency":
+                    SearchData.DepartmentFilter = string.Empty;
+                    break;
+                case "vendorName":
+                    SearchData.DepartmentFilter = string.Empty;
+                    break;
+            }
+        }
+
+        private void ChangeItemType()
+        {
+            SearchbarTooltipText = SearchData.ItemTypeFilter is "saleHeader" ? "Search by Id, Sale Name, Sale Notes, Customer Name, Vendor Name and Username" : "Search by Id, Sale Name, File Name and Username";
+            ClearFilters();
         }
     }
 }
