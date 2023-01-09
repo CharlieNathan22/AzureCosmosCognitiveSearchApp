@@ -16,13 +16,11 @@ namespace AzureCosmosCognitiveSearchApp.Pages
         private List<Tuple<string?, long?>> CurrencyFacet { get; set; } = new();
         private List<Tuple<string?, long?>> DivisionFacet { get; set; } = new();
         private List<Tuple<string?, long?>> VendorNameFacet { get; set; } = new();
-        private bool HasSearched { get; set; }
         private bool FiltersVisible { get; set; }
         private SearchData SearchData { get; set; } = new SearchData();
         
         protected override async Task OnInitializedAsync()
         {
-            HasSearched = false;
             FiltersVisible= false;
             SearchData = new SearchData();
             await base.OnInitializedAsync();
@@ -38,16 +36,12 @@ namespace AzureCosmosCognitiveSearchApp.Pages
             }
             else
             {
+                ClearFilters();
                 var results = await CognitiveSearchService.SearchIndex<SaleAttachment>(SearchData);
                 SaleAttachements = results.GetResults().Select(r => r.Document).ToList();
                 GetFacets(results);
             }
-
-            if(SaleHeaders is not null || SaleAttachements is not null)
-            {
-                HasSearched = true;
-                StateHasChanged();
-            }
+            StateHasChanged();
         }
 
         private void GetFacets<T>(SearchResults<T> results)
