@@ -18,8 +18,6 @@ namespace AzureCosmosCognitiveSearchApp.Pages
         private List<Tuple<string?, long?>> VendorNameFacet { get; set; } = new();
         private bool HasSearched { get; set; }
         private bool FiltersVisible { get; set; }
-        private string SearchbarTooltipText { get; set; } = "Search by Id, Sale Name, Sale Notes and Username";
-
         private SearchData SearchData { get; set; } = new SearchData();
         
         protected override async Task OnInitializedAsync()
@@ -65,7 +63,6 @@ namespace AzureCosmosCognitiveSearchApp.Pages
             SearchData.DivisionFilter = string.Empty;
             SearchData.CurrencyFilter = string.Empty;
             SearchData.VendorNameFilter = string.Empty;
-            SearchData.CreatedByFilter = string.Empty;
             SearchData.DepartmentFilter = string.Empty;
         }
 
@@ -77,21 +74,15 @@ namespace AzureCosmosCognitiveSearchApp.Pages
                     SearchData.DepartmentFilter = string.Empty;
                     break;
                 case "division":
-                    SearchData.DepartmentFilter = string.Empty;
+                    SearchData.DivisionFilter = string.Empty;
                     break;
                 case "currency":
-                    SearchData.DepartmentFilter = string.Empty;
+                    SearchData.CurrencyFilter = string.Empty;
                     break;
                 case "vendorName":
-                    SearchData.DepartmentFilter = string.Empty;
+                    SearchData.VendorNameFilter = string.Empty;
                     break;
             }
-        }
-
-        private void ChangeItemType()
-        {
-            SearchbarTooltipText = SearchData.ItemTypeFilter is "saleHeader" ? "Search by Id, Sale Name, Sale Notes, Customer Name, Vendor Name and Username" : "Search by Id, Sale Name, File Name and Username";
-            ClearFilters();
         }
     }
 }
