@@ -18,7 +18,7 @@ namespace AzureCosmosCognitiveSearchApp.CosmosAPI
 
         private static SearchClient CreateSearchClientForQueries(IConfiguration myConfig, string searchIndexName)
         {
-            string searchServiceEndPoint = myConfig.GetConnectionString("SearchEdnpointUri");
+            string searchServiceEndPoint = myConfig.GetConnectionString("SearchEndpointUri");
             string queryApiKey = myConfig.GetConnectionString("SearchRead-OnlyPK");
 
             SearchClient searchClient = new (new Uri(searchServiceEndPoint), searchIndexName, new AzureKeyCredential(queryApiKey));
