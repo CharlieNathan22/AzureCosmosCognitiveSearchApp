@@ -16,12 +16,11 @@ namespace AzureCosmosCognitiveSearchApp.Pages
         private List<Tuple<string?, long?>> CurrencyFacet { get; set; } = new();
         private List<Tuple<string?, long?>> DivisionFacet { get; set; } = new();
         private List<Tuple<string?, long?>> VendorNameFacet { get; set; } = new();
-        private bool FiltersVisible { get; set; }
+        private long? DocumentResultCount { get; set; }
         private SearchData SearchData { get; set; } = new SearchData();
         
         protected override async Task OnInitializedAsync()
         {
-            FiltersVisible= false;
             SearchData = new SearchData();
             await base.OnInitializedAsync();
         }
@@ -32,6 +31,7 @@ namespace AzureCosmosCognitiveSearchApp.Pages
             {
                 var results = await CognitiveSearchService.SearchIndex<SaleHeader>(SearchData);
                 SaleHeaders = results.GetResults().Select(r => r.Document).ToList();
+                DocumentResultCount = SaleHeaders.Count();
                 GetFacets(results);
             }
             else
@@ -39,6 +39,7 @@ namespace AzureCosmosCognitiveSearchApp.Pages
                 ClearFilters();
                 var results = await CognitiveSearchService.SearchIndex<SaleAttachment>(SearchData);
                 SaleAttachements = results.GetResults().Select(r => r.Document).ToList();
+                DocumentResultCount = SaleAttachements.Count();
                 GetFacets(results);
             }
             StateHasChanged();

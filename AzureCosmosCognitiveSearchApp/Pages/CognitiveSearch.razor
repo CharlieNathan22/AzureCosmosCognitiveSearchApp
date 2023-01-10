@@ -24,12 +24,12 @@
                 <MudTextField Clearable="true" T="string" Label="Search Documents" @bind-Value="@SearchData.SearchText" Variant="Variant.Text" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" IconSize="Size.Small" Style="width:100%; height:100%" />
             </MudItem>
             <MudItem xs="2" >
-                <MudButton OnClick="@(() => Search())" EndIcon="@Icons.Custom.Brands.MicrosoftAzure" Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Info" Style="width:100%; height:100%">Search</MudButton>
+                <MudButton OnClick="@(() => Search())" EndIcon="@Icons.Custom.Brands.MicrosoftAzure" Variant="Variant.Filled" Color="Color.Primary" IconColor="Color.Info" Style="width:100%; height:100%">Search Index</MudButton>
             </MudItem>
         </MudGrid>
     </MudContainer>
-
-    <MudExpansionPanel Text='Filter after initial search' style="margin-top:6%">
+    <MudSpacer />
+    <MudExpansionPanel Disabled='SearchData.ItemTypeFilter is not "saleHeader"' Text='Filter after initial search' style="margin-top:6%">
         <MudGrid>
             @if (DepartmentFacet.Count > 1)
             {
@@ -122,7 +122,7 @@
             </MudItem>
         </MudGrid>
     </MudExpansionPanel>
-    <MudCard style="margin-top:30px; margin-bottom:50px" Elevation="1">
+    <MudCard style="margin-top:30px; margin-bottom:40px" Elevation="1">
         <MudCardContent style="justify-content:center; display: flex">
             <div>
                 <MudText Typo="Typo.subtitle2">Selected filters: </MudText>
@@ -149,11 +149,14 @@
             </div>
         </MudCardContent>
     </MudCard>
+    <MudSpacer />
     @if(SearchData.ItemTypeFilter is "saleHeader")
     {
         <MudTable Items="@SaleHeaders" Hover="true" Bordered="true" Striped="true" FixedHeader="true" Elevation="1" Height="700px" RowsPerPage="50">
             <ToolBarContent>
-                <MudText Typo="Typo.h6">Sale Headers</MudText>
+                <MudText Typo="Typo.h5">Sale Headers</MudText>
+                <MudSpacer />
+                <MudText Typo="Typo.h6">Sales Returned: @DocumentResultCount</MudText>
                 <MudSpacer />
             </ToolBarContent>
             <HeaderContent>
@@ -182,9 +185,11 @@
     }
     else if (SearchData.ItemTypeFilter is "saleAttachment")
     {
-        <MudTable Items="@SaleAttachements" Hover="true" Bordered="true" Striped="true" FixedHeader="true">
+        <MudTable Items="@SaleAttachements" Hover="true" Bordered="true" Striped="true" FixedHeader="true" Elevation="1" Height="700px" RowsPerPage="50">
             <ToolBarContent>
-                <MudText Typo="Typo.h6">Sale Attachments</MudText>
+                <MudText Typo="Typo.h5">Sale Attachments</MudText>
+                <MudSpacer />
+                <MudText Typo="Typo.h6">Sales Returned: @DocumentResultCount</MudText>
                 <MudSpacer />
             </ToolBarContent>
             <HeaderContent>
