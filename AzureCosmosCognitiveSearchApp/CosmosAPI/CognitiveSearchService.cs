@@ -27,7 +27,7 @@ namespace AzureCosmosCognitiveSearchApp.CosmosAPI
         private static SearchOptions CreateOptions(SearchData searchData)
         {
             string filters = CreateFilters(searchData);
-            SearchOptions options = new SearchOptions() { Filter = filters };
+            SearchOptions options = new SearchOptions() { Filter = filters, SearchMode = SearchMode.All };
             options.Select.Add(CreateSelect(searchData.ItemTypeFilter));
             options.OrderBy.Add("department desc");
             options.Facets.Add("sourceSystem");
@@ -35,7 +35,7 @@ namespace AzureCosmosCognitiveSearchApp.CosmosAPI
             options.Facets.Add("department, count:5");
             options.Facets.Add("vendor/name, count:5");
             options.Facets.Add("sellerCurrency, count:5");
-            return options;
+             return options;
         }
 
         public async Task<SearchResults<T>> SearchIndex<T>(SearchData searchData)
