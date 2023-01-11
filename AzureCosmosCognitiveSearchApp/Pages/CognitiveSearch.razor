@@ -16,8 +16,8 @@
         <MudGrid>
             <MudItem xs="2">
                 <MudSelect @bind-Value="@SearchData.ItemTypeFilter" @onchange="@ClearFilters" Label="Item Type" AdornmentColor="Color.Primary" Variant="Variant.Filled" >
-                    <MudSelectItem Value="@("saleHeader")">Sale Header</MudSelectItem>
-                    <MudSelectItem Value="@("saleAttachment")">Sale Attachment</MudSelectItem>
+                    <MudSelectItem Value="@("saleHeader")">Header</MudSelectItem>
+                    <MudSelectItem Value="@("saleAttachment")">Attachment</MudSelectItem>
                 </MudSelect>
             </MudItem>
             <MudItem xs="8">
@@ -29,7 +29,7 @@
         </MudGrid>
     </MudContainer>
     <MudSpacer />
-    <MudExpansionPanel Disabled='SearchData.ItemTypeFilter is not "saleHeader"' Text='Filter after initial search' style="margin-top:6%">
+    <MudExpansionPanel Text='Filter after initial search' style="margin-top:6%; color: purple">
         <MudGrid>
             @if (DepartmentFacet.Count > 1)
             {
@@ -43,7 +43,8 @@
                                 <MudRadioGroup @bind-SelectedOption="@SearchData.DepartmentFilter">
                                     @foreach (var department in DepartmentFacet)
                                     {
-                                        <MudRadio Option="@department.Item1" Color="Color.Primary">@department.Item1 count: @department.Item2</MudRadio>
+                                        <MudText Typo="Typo.subtitle2" Color="Color.Primary">count: @department.Item2</MudText>
+                                        <MudRadio Option="@department.Item1" Color="Color.Primary" Size="Size.Small" Dense="true">@department.Item1</MudRadio>
                                         <br />
                                     }
                                 </MudRadioGroup>
@@ -64,7 +65,8 @@
                                 <MudRadioGroup @bind-SelectedOption="@SearchData.CurrencyFilter">
                                     @foreach (var currency in CurrencyFacet)
                                     {
-                                        <MudRadio Option="@currency.Item1" Color="Color.Primary">@currency.Item1 count: @currency.Item2</MudRadio>
+                                        <MudText Typo="Typo.subtitle2" Color="Color.Primary">count: @currency.Item2</MudText>
+                                        <MudRadio Option="@currency.Item1" Color="Color.Primary" Size="Size.Small" Dense="true">@currency.Item1</MudRadio>
                                         <br />
                                     }
                                 </MudRadioGroup>
@@ -85,7 +87,8 @@
                                 <MudRadioGroup @bind-SelectedOption="@SearchData.DivisionFilter">
                                     @foreach (var division in DivisionFacet)
                                     {
-                                        <MudRadio Option="@division.Item1" Color="Color.Primary">@division.Item1 count: @division.Item2</MudRadio>
+                                        <MudText Typo="Typo.subtitle2" Color="Color.Primary">count: @division.Item2</MudText>
+                                        <MudRadio Option="@division.Item1" Color="Color.Primary" Size="Size.Small" Dense="true">@division.Item1</MudRadio>
                                         <br />
                                     }
                                 </MudRadioGroup>
@@ -103,10 +106,11 @@
                         </MudCardHeader>
                         <MudCardContent>
                             <MudForm>
-                                <MudRadioGroup @bind-SelectedOption="@SearchData.DepartmentFilter">
-                                    @foreach (var venodrName in VendorNameFacet)
+                                <MudRadioGroup @bind-SelectedOption="@SearchData.VendorNameFilter">
+                                    @foreach (var vendorName in VendorNameFacet)
                                     {
-                                        <MudRadio Option="@venodrName.Item1" Color="Color.Primary">@venodrName.Item1 count: @venodrName.Item2</MudRadio>
+                                        <MudText Typo="Typo.subtitle2" Color="Color.Primary">count: @vendorName.Item2</MudText>
+                                        <MudRadio Option="@vendorName.Item1" Color="Color.Primary" Size="Size.Small" Dense="true">@vendorName.Item1</MudRadio>
                                         <br />
                                     }
                                 </MudRadioGroup>
